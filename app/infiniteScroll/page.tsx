@@ -1,8 +1,10 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { InfiniteScrollList } from './components/InfiniteScrollList'
 import { InfiniteScrollListItem } from './components/InfiniteScrollListItem'
+import { Hoge } from './components/Hoge'
+import Link from 'next/link'
 
 const InfiniteScrollPage = () => {
   const pageCursor = useRef<string>('a')
@@ -25,9 +27,24 @@ const InfiniteScrollPage = () => {
     setEntries((entries) => entries.concat(res))
   }
 
+  const [hoge, setHoge] = useState('hoge')
+  useEffect(() => {
+    const id = setInterval(() => {
+      setHoge(hoge === 'hoge' ? 'fuga' : 'hoge')
+    }, 1000)
+    return () => {
+      clearInterval(id)
+    }
+  }, [hoge, setHoge])
+
   return (
     <div>
-      <p className="text-2xl font-bold p-4">infiniteScroll</p>
+      <p className="text-2xl font-bold p-4">
+        infiniteScroll{' '}
+        <Link href="/" className="text-md font-normal">
+          Home
+        </Link>
+      </p>
       <InfiniteScrollList pageStart={pageCursor.current} loadMore={fetchData} useWindow hasMore={hasMore.current}>
         {/* アイテムがゼロの場合の要素の高さを、少なくとも window.innerHeight お以上にしておかないと、fetchがt暴発するので注意 */}
         <div className="grid w-full grid-cols-1 gap-[12px] p-[12px] min-h-[900px]">
@@ -36,6 +53,7 @@ const InfiniteScrollPage = () => {
           ))}
         </div>
       </InfiniteScrollList>
+      <Hoge txt={hoge} />
     </div>
   )
 }

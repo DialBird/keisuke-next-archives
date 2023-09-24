@@ -96,6 +96,8 @@ export const InfiniteScrollList = ({ children, pageStart, hasMore, loadMore, use
       return 0
     }
 
+    // offsetHeightの定義
+    // https://developer.mozilla.org/ja/docs/Web/API/HTMLElement/offsetHeight
     return calculateTopPosition(el) + (el.offsetHeight - scrollTop - window.innerHeight)
   }
 
